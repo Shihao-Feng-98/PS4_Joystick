@@ -19,12 +19,11 @@ int main(int argc, char** argv)
 
         if (!ps4->read_data()) {break;}
 
-        printf("\rTIME:%8d A:%d B:%d X:%d Y:%d L1:%d R1:%d SHARE:%d OPTIONS:%d LX:%-6d LY:%-6d RX:%-6d RY:%-6d L2:%-6d R2:%-6d XX:%-6d YY:%-6d", 
-                ps4->map.TIME, ps4->map.A, ps4->map.B, ps4->map.X, ps4->map.Y, ps4->map.L1, ps4->map.R1, ps4->map.SHARE, ps4->map.OPTIONS, 
-                ps4->map.LX, ps4->map.LY, ps4->map.RX, ps4->map.RY, ps4->map.L2, ps4->map.R2, ps4->map.XX, ps4->map.YY);
+        printf("\rTIME:%8d A:%d B:%d X:%d Y:%d L1:%d R1:%d SHARE:%d OPTIONS:%d LX:%-6f LY:%-6f RX:%-6f RY:%-6f L2:%-6f R2:%-6f XX:%-6d YY:%-6d", 
+                ps4->ps4_map.TIME, ps4->ps4_map.A, ps4->ps4_map.B, ps4->ps4_map.X, ps4->ps4_map.Y, ps4->ps4_map.L1, ps4->ps4_map.R1, ps4->ps4_map.SHARE, ps4->ps4_map.OPTIONS, 
+                ps4->ps4_map.LX, ps4->ps4_map.LY, ps4->ps4_map.RX, ps4->ps4_map.RY, ps4->ps4_map.L2, ps4->ps4_map.R2, ps4->ps4_map.XX, ps4->ps4_map.YY);
 
         fflush(stdout);
     }
     return 0;
 }
-

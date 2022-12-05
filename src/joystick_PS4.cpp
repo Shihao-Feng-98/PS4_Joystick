@@ -6,8 +6,8 @@ JoystickPS4::JoystickPS4(const char *file_name)
     if (_ps4_fd < 0){
         printf("[JoystickPS4]: open error(%d), %s\n", errno, strerror(errno));
     }
-    map.L2 = PS4_AXIS_VEL_MIN;
-    map.R2 = PS4_AXIS_VEL_MIN;
+    ps4_map.L2 = 0.;
+    ps4_map.R2 = 0.;
 }
 
 JoystickPS4::~JoystickPS4()
@@ -28,41 +28,41 @@ bool JoystickPS4::read_data()
     _number = _js.number;
     _value = _js.value;
 
-    map.TIME = _js.time;
+    ps4_map.TIME = _js.time;
     if (_type == JS_EVENT_BUTTON)
     {
         switch (_number)
         {
             case PS4_BUTTON_A:
-                map.A = _value;
+                ps4_map.A = _value;
                 break;
 
             case PS4_BUTTON_B:
-                map.B = _value;
+                ps4_map.B = _value;
                 break;
 
             case PS4_BUTTON_X:
-                map.X = _value;
+                ps4_map.X = _value;
                 break;         
 
             case PS4_BUTTON_Y:
-                map.Y = _value;
+                ps4_map.Y = _value;
                 break;
 
             case PS4_BUTTON_L1:
-                map.L1 = _value;
+                ps4_map.L1 = _value;
                 break;
 
             case PS4_BUTTON_R1:
-                map.R1 = _value;
+                ps4_map.R1 = _value;
                 break;
                 
             case PS4_BUTTON_SHARE:
-                map.SHARE = _value;
+                ps4_map.SHARE = _value;
                 break;
 
             case PS4_BUTTON_OPTIONS:
-                map.OPTIONS = _value;
+                ps4_map.OPTIONS = _value;
                 break;
 
             default:
@@ -74,36 +74,46 @@ bool JoystickPS4::read_data()
         switch (_number)
         {
         case PS4_AXIS_LX:
-            map.LX = _value;
+            ps4_map.LX = (double)_value/PS4_AXIS_VEL_LIMIT;
             break;
 
         case PS4_AXIS_LY:
-            map.LY = _value;
+            ps4_map.LY = (double)-_value/PS4_AXIS_VEL_LIMIT;
             break;
 
         case PS4_AXIS_RX:
-            map.RX = _value;
+            ps4_map.RX = (double)_value/PS4_AXIS_VEL_LIMIT;
             break;
 
         case PS4_AXIS_RY:
-            map.RY = _value;
+            ps4_map.RY = (double)-_value/PS4_AXIS_VEL_LIMIT;
             break;
 
         case PS4_AXIS_L2:
-            map.L2 = _value;
+            ps4_map.L2 = (double)(_value+PS4_AXIS_VEL_LIMIT)/(2*PS4_AXIS_VEL_LIMIT);
             break;        
 
         case PS4_AXIS_R2:
-            map.R2 = _value;
+            ps4_map.R2 = (double)(_value+PS4_AXIS_VEL_LIMIT)/(2*PS4_AXIS_VEL_LIMIT);
             break;  
 
         case PS4_AXIS_XX:
-            map.XX = _value;
+            if (_value == 0) {
+                ps4_map.XX = 0;
+            }
+            else {
+                ps4_map.XX = (_value == PS4_AXIS_VEL_LIMIT ? 1 : -1);
+            }
             break;  
 
         case PS4_AXIS_YY:
-            map.YY = _value;
-            break;  
+            if (_value == 0) {
+                ps4_map.YY = 0;
+            }
+            else {
+                ps4_map.YY = (_value == PS4_AXIS_VEL_LIMIT ? -1 : 1);
+            }
+            break;
 
         default:
             break;

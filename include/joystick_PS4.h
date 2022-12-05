@@ -16,9 +16,8 @@
 #define PS4_BUTTON_OFF      0x00
 #define PS4_BUTTON_ON       0x01
 
-#define PS4_AXIS_VEL_MIN    -32767
 #define PS4_AXIS_VEL_MID    0x00
-#define PS4_AXIS_VEL_MAX    32767
+#define PS4_AXIS_VEL_LIMIT  32767
 
 #define PS4_BUTTON_A        0x00    // 叉
 #define PS4_BUTTON_B        0x01    // 圆
@@ -38,7 +37,6 @@
 #define PS4_AXIS_XX         0x06    // 方向键x轴
 #define PS4_AXIS_YY         0x07    // 方向键y轴
 
-
 struct PS4_map_t
 {
     int TIME;
@@ -48,9 +46,9 @@ struct PS4_map_t
     int A, B, X, Y; // right button (0, 1) default 0
     int L1, R1;     // button (0, 1) default 0
     
-    int LX, LY;     // left axis [-32767, 32767] defaut 0
-    int RX, RY;     // right axis [-32767, 32767] defaut 0
-    int L2, R2;     // top axis [-32767, 32767] defaut -32767
+    double LX, LY;     // left axis [-1, 1] defaut 0
+    double RX, RY;     // right axis [-1, 1] defaut 0
+    double L2, R2;     // top axis [-1, 1] defaut -1
     int XX, YY;     // left button (-1, 0, 1) default 0
 };
 
@@ -61,7 +59,7 @@ public:
     ~JoystickPS4();
     bool read_data();
 
-    PS4_map_t map;
+    PS4_map_t ps4_map;
     
 private:
     int _ps4_fd; // -1 is valid
