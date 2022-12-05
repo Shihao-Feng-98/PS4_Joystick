@@ -1,2 +1,2 @@
 # PS4_joystick
-Read the PS4 joystick via cpp.
+Read the PS4 joystick.
